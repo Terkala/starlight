@@ -1,0 +1,35 @@
+- type: startingGear
+  id: DeliveryBoyGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitCargo
+    shoes: ClothingShoesColorBrown
+    head: ClothingHeadHatCargosoft
+    ears: ClothingHeadsetCargo
+
+- type: entity
+  parent: MobCivilian
+  id: MobDeliveryBoyAdmeme
+  name: delivery boy
+  suffix: Admeme, Pathfinding
+  description: An admin test dummy. Click him, pick a station beacon, and he will walk there.
+  categories: [ DoNotMap ]
+  components:
+  - type: DeliveryBoy
+  - type: HybridPathfinding
+  - type: ActiveNPC
+  - type: RandomHumanoidAppearance
+  - type: Loadout
+    prototypes: [DeliveryBoyGear]
+  - type: Access
+    groups:
+    - AllAccess
+  - type: ActivatableUI
+    key: enum.DeliveryBoyUiKey.Key
+    adminOnly: true
+    requiresComplex: false
+    inHandsOnly: false
+    verbText: delivery-boy-verb-open
+  - type: UserInterface
+    interfaces:
+      enum.DeliveryBoyUiKey.Key:
+        type: DeliveryBoyBoundUserInterface

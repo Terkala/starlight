@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server.NPC.Components;
 using Content.Server.NPC.Pathfinding;
+using Content.Shared._BPL.Pathfinding;
 using Content.Shared.Interaction;
 using Content.Shared.Movement.Components;
 using Content.Shared.NPC;
@@ -103,6 +104,9 @@ public sealed partial class NPCSteeringSystem
         var ourCoordinates = xform.Coordinates;
         var destinationCoordinates = steering.Coordinates;
         var inLos = true;
+
+        if (HasComp<HybridPathfindingComponent>(uid))
+            _pathBroker.TryOpenCommittedDoor(uid, steering);
 
         // Starlight Start
         // check if we should ignore all pathing logic and go straight to the target coordinates

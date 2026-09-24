@@ -121,21 +121,65 @@ namespace Content.Server.NPC.Pathfinding
             };
 
             UpdateGrid(options);
-            _stopwatch.Restart();
-            var amount = Math.Min(PathTickLimit, _pathRequests.Count);
-            var results = ArrayPool<PathResult>.Shared.Rent(amount);
+            ProcessQueuedRequests(_pathRequests);
+        }
 
+        /// <summary>
+        /// Put a fine path on a caller-owned queue. <see cref="ProcessQueuedRequests"/> must run
+        /// from that caller's <see cref="Update"/> so Grafana attributes the cost to that system.
+        /// </summary>
+        public PathRequest EnqueueOwnedRequest(
+            List<PathRequest> queue,
+            EntityUid entity,
+            EntityCoordinates start,
+            EntityCoordinates end,
+            float range,
+            CancellationToken cancelToken,
+            PathFlags flags = PathFlags.None)
+        {
+            var request = GetRequest(entity, start, end, range, cancelToken, flags);
+            queue.Add(request);
+            return request;
+        }
+
+        /// <summary>
+        /// Time-slice the given queue. The normal pathfinder passes its own list; the hybrid broker passes another.
+        /// </summary>
+        public void ProcessQueuedRequests(List<PathRequest> pathRequests)
+        {
+            if (pathRequests.Count == 0)
+                return;
+
+            if (_cfg.GetCVar(StarlightCCVars.DisablePathfinding))
+            {
+                for (var i = pathRequests.Count - 1; i >= 0; i--)
+                {
+                    var blocked = pathRequests[i];
+                    pathRequests.RemoveAt(i);
+                    blocked.Tcs.TrySetResult(PathResult.NoPath);
+                }
+
+                return;
+            }
+
+            var options = new ParallelOptions()
+            {
+                MaxDegreeOfParallelism = _parallel.ParallelProcessCount,
+            };
+
+            _stopwatch.Restart();
+            var amount = Math.Min(PathTickLimit, pathRequests.Count);
+            var results = ArrayPool<PathResult>.Shared.Rent(amount);
 
             Parallel.For(0, amount, options, i =>
             {
-                // If we're over the limit (either time-sliced or hard cap).
                 if (_stopwatch.Elapsed >= PathTime)
                 {
                     results[i] = PathResult.Continuing;
                     return;
                 }
 
-                var request = _pathRequests[i];
+                var request = pathRequests[i];
 
                 try
                 {
@@ -160,11 +204,10 @@ namespace Content.Server.NPC.Pathfinding
 
             var offset = 0;
 
-            // then, single-threaded cleanup.
             for (var i = 0; i < amount; i++)
             {
                 var resultIndex = i + offset;
-                var path = _pathRequests[resultIndex];
+                var path = pathRequests[resultIndex];
                 var result = results[i];
 
                 if (path.Task.Exception != null)
@@ -180,8 +223,7 @@ namespace Content.Server.NPC.Pathfinding
                     case PathResult.Path:
                     case PathResult.NoPath:
                         SendDebug(path);
-                        // Don't use RemoveSwap because we still want to try and process them in order.
-                        _pathRequests.RemoveAt(resultIndex);
+                        pathRequests.RemoveAt(resultIndex);
                         offset--;
                         path.Tcs.SetResult(result);
                         SendRoute(path);

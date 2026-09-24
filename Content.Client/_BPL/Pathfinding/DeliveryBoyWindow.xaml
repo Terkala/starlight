@@ -1,0 +1,26 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      Title="{Loc 'delivery-boy-window-title'}"
+                      MinSize="280 360"
+                      SetSize="320 420">
+    <BoxContainer Orientation="Vertical" Margin="8">
+        <LineEdit Name="SearchBar"
+                  PlaceHolder="{Loc 'delivery-boy-window-search'}"
+                  HorizontalExpand="True"
+                  Margin="0 0 0 6"/>
+        <ItemList Name="BeaconList"
+                  SelectMode="Single"
+                  VerticalExpand="True"
+                  HorizontalExpand="True"/>
+        <Label Name="EmptyLabel"
+               Text="{Loc 'delivery-boy-window-empty'}"
+               HorizontalAlignment="Center"
+               Visible="False"
+               Margin="0 8"/>
+        <Button Name="ConfirmButton"
+                Text="{Loc 'delivery-boy-window-confirm'}"
+                HorizontalAlignment="Right"
+                Disabled="True"
+                Margin="0 8 0 0"/>
+    </BoxContainer>
+</controls:FancyWindow>

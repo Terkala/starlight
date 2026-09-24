@@ -1,0 +1,10 @@
+delivery-boy-verb-open = Set destination
+delivery-boy-window-title = Delivery destination
+delivery-boy-window-search = Filter beacons...
+delivery-boy-window-confirm = Confirm
+delivery-boy-window-empty = No station beacons on this grid.
+delivery-boy-window-no-match = No matching beacons.
+delivery-boy-beacon-label = {$name} ({$x}, {$y})
+delivery-boy-popup-going = Heading to {$beacon}.
+delivery-boy-popup-invalid = That beacon is gone or disabled.
+delivery-boy-popup-wrong-grid = That beacon is not on this grid.

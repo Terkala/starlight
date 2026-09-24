@@ -1,0 +1,6 @@
+- type: entity
+  id: BPLPathfindingTestMarker
+  parent: MarkerBase
+  categories: [ HideSpawnMenu ]
+  name: pathfinding test marker
+  description: Marker used by BPL pathfinding tests.

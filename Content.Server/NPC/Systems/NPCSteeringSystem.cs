@@ -2,6 +2,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Content.Server.Administration.Managers;
+using Content.Server._BPL.Pathfinding;
 using Content.Server.DoAfter;
 using Content.Server.NPC.Components;
 using Content.Server.NPC.Events;
@@ -13,6 +14,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
+using Content.Shared._BPL.Pathfinding;
 using Content.Shared.NPC;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
@@ -61,6 +63,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
     [Dependency] private DoAfterSystem _doAfter = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private NpcFactionSystem _npcFaction = default!;
+    [Dependency] private PathBrokerSystem _pathBroker = default!;
     [Dependency] private PathfindingSystem _pathfindingSystem = default!;
     [Dependency] private PryingSystem _pryingSystem = default!;
     [Dependency] private SharedMapSystem _mapSystem = default!;
@@ -447,6 +450,12 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         if (steering.Pathfind || targetDistance < steering.RepathRange)
             return;
 
+        if (HasComp<HybridPathfindingComponent>(uid) && _pathBroker.Enabled)
+        {
+            RequestHybridPath(uid, steering, xform);
+            return;
+        }
+
         // Short-circuit with no path.
         var targetPoly = _pathfindingSystem.GetPoly(steering.Coordinates);
 
@@ -492,6 +501,43 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         var targetPos = _transform.ToMapCoordinates(steering.Coordinates);
         var ourPos = _transform.GetMapCoordinates(uid, xform: xform);
 
+        PrunePath(uid, ourPos, targetPos.Position - ourPos.Position, result.Path);
+        steering.CurrentPath = new Queue<PathPoly>(result.Path);
+    }
+
+    /// <summary>
+    /// Door-graph path for mobs with <see cref="HybridPathfindingComponent"/>.
+    /// Everyone else stays on <see cref="RequestPath"/>.
+    /// </summary>
+    private async void RequestHybridPath(EntityUid uid, NPCSteeringComponent steering, TransformComponent xform)
+    {
+        steering.PathfindToken = new CancellationTokenSource();
+        var flags = steering.Flags | _pathfindingSystem.GetFlags(uid);
+        var result = await _pathBroker.RequestSteerPath(
+            uid,
+            xform.Coordinates,
+            steering.Coordinates,
+            steering.Range,
+            flags,
+            steering.PathfindToken.Token);
+
+        steering.PathfindToken = null;
+
+        if (result.Result == PathResult.NoPath)
+        {
+            steering.CurrentPath.Clear();
+            steering.FailedPathCount++;
+
+            if (steering.FailedPathCount >= NPCSteeringComponent.FailedPathLimit)
+                steering.Status = SteeringStatus.NoPath;
+
+            return;
+        }
+
+        // A partial hop is a legal next door, not a failed path.
+        steering.FailedPathCount = 0;
+        var targetPos = _transform.ToMapCoordinates(steering.Coordinates);
+        var ourPos = _transform.GetMapCoordinates(uid, xform: xform);
         PrunePath(uid, ourPos, targetPos.Position - ourPos.Position, result.Path);
         steering.CurrentPath = new Queue<PathPoly>(result.Path);
     }
