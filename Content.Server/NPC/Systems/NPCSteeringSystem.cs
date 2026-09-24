@@ -2,7 +2,6 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Content.Server.Administration.Managers;
-using Content.Server._BPL.Pathfinding;
 using Content.Server.DoAfter;
 using Content.Server.NPC.Components;
 using Content.Server.NPC.Events;
@@ -14,7 +13,6 @@ using Content.Shared.Interaction;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
-using Content.Shared._BPL.Pathfinding;
 using Content.Shared.NPC;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
@@ -34,7 +32,9 @@ using Content.Shared.Prying.Systems;
 using Microsoft.Extensions.ObjectPool;
 using Prometheus;
 // Starlight Start
+using Content.Server._BPL.Pathfinding;
 using Content.Server.Gravity;
+using Content.Shared._BPL.Pathfinding;
 // Starlight End
 
 namespace Content.Server.NPC.Systems;
@@ -63,7 +63,9 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
     [Dependency] private DoAfterSystem _doAfter = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private NpcFactionSystem _npcFaction = default!;
+    // Starlight Start
     [Dependency] private PathBrokerSystem _pathBroker = default!;
+    // Starlight End
     [Dependency] private PathfindingSystem _pathfindingSystem = default!;
     [Dependency] private PryingSystem _pryingSystem = default!;
     [Dependency] private SharedMapSystem _mapSystem = default!;
@@ -450,11 +452,13 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         if (steering.Pathfind || targetDistance < steering.RepathRange)
             return;
 
+        // Starlight Start
         if (HasComp<HybridPathfindingComponent>(uid) && _pathBroker.Enabled)
         {
             RequestHybridPath(uid, steering, xform);
             return;
         }
+        // Starlight End
 
         // Short-circuit with no path.
         var targetPoly = _pathfindingSystem.GetPoly(steering.Coordinates);
@@ -505,6 +509,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         steering.CurrentPath = new Queue<PathPoly>(result.Path);
     }
 
+    // Starlight Start
     /// <summary>
     /// Door-graph path for mobs with <see cref="HybridPathfindingComponent"/>.
     /// Everyone else stays on <see cref="RequestPath"/>.
@@ -541,6 +546,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         PrunePath(uid, ourPos, targetPos.Position - ourPos.Position, result.Path);
         steering.CurrentPath = new Queue<PathPoly>(result.Path);
     }
+    // Starlight End
 
     // TODO: Move these to movercontroller
 

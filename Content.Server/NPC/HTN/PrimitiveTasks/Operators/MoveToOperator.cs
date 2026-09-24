@@ -1,8 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
+// Starlight Start
 using Content.Server._BPL.Pathfinding;
+// Starlight End
 using Content.Server.NPC.Components;
+// Starlight Start
 using Content.Shared._BPL.Pathfinding;
+// Starlight End
 using Content.Server.NPC.Pathfinding;
 using Content.Server.NPC.Systems;
 using Robust.Shared.Map;
@@ -19,7 +23,9 @@ public sealed partial class MoveToOperator : HTNOperator, IHtnConditionalShutdow
     [Dependency] private IEntityManager _entManager = default!;
     private NPCSteeringSystem _steering = default!;
     private PathfindingSystem _pathfind = default!;
+    // Starlight Start
     private PathBrokerSystem _broker = default!;
+    // Starlight End
     private SharedTransformSystem _transform = default!;
 
     /// <summary>
@@ -85,7 +91,9 @@ public sealed partial class MoveToOperator : HTNOperator, IHtnConditionalShutdow
     {
         base.Initialize(sysManager);
         _pathfind = sysManager.GetEntitySystem<PathfindingSystem>();
+        // Starlight Start
         _broker = sysManager.GetEntitySystem<PathBrokerSystem>();
+        // Starlight End
         _steering = sysManager.GetEntitySystem<NPCSteeringSystem>();
         _transform = sysManager.GetEntitySystem<SharedTransformSystem>();
     }
@@ -133,6 +141,7 @@ public sealed partial class MoveToOperator : HTNOperator, IHtnConditionalShutdow
         // Starlight edit Start
         if (!doDirectMove)
         {
+            // Starlight Start
             if (_entManager.HasComponent<HybridPathfindingComponent>(owner) && _broker.Enabled)
             {
                 var flags = _pathfind.GetFlags(blackboard);
@@ -144,6 +153,7 @@ public sealed partial class MoveToOperator : HTNOperator, IHtnConditionalShutdow
                     {NPCBlackboard.OwnerCoordinates, targetCoordinates},
                 });
             }
+            // Starlight End
 
             var path = await _pathfind.GetPath(
                 blackboard.GetValue<EntityUid>(NPCBlackboard.Owner),

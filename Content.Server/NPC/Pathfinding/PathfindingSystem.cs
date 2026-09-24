@@ -121,9 +121,12 @@ namespace Content.Server.NPC.Pathfinding
             };
 
             UpdateGrid(options);
+            // Starlight Start
             ProcessQueuedRequests(_pathRequests);
+            // Starlight End
         }
 
+        // Starlight Start
         /// <summary>
         /// Put a fine path on a caller-owned queue. <see cref="ProcessQueuedRequests"/> must run
         /// from that caller's <see cref="Update"/> so Grafana attributes the cost to that system.
@@ -235,6 +238,7 @@ namespace Content.Server.NPC.Pathfinding
 
             ArrayPool<PathResult>.Shared.Return(results);
         }
+        // Starlight End
 
         /// <summary>
         /// Creates neighbouring edges at both locations, each leading to the other.
