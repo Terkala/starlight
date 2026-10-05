@@ -5,6 +5,16 @@
   name: entropic colossus
   description: A colossal monstrosity of malign plating and dendritic infestation.
   components:
+  - type: SocialInteractionGiver
+    interactionPrototypes:
+    - Look
+    - Wave
+  - type: SocialInteractionReceiver
+    interactionOverrides: # no nose
+    - id: Boop
+      interactString: booping-borg-success
+      messagePerceivedByOthers: booping-borg-success-others
+      emoteMessage: booping-borg-emote
   - type: FTLSmashImmune
   - type: CosmicCultExamine
     cultistText: cosmic-examine-text-cultentity
@@ -123,7 +133,7 @@
     - DoorBumpOpener
     - Unimplantable
   - type: Damageable
-    damageContainer: StructuralInorganic
+    damageContainer: MalignStructure
     damageModifierSet: Malignstone
   - type: Destructible
     thresholds:
@@ -173,9 +183,7 @@
     maximumHealthScaling: 0.25
   - type: ToolRefinable
     refineTime: 16
-    refineResult:
-    - id: CosmicCultMindSink
-      amount: 1
+    refineResult: []
   - type: PointLight
     color: "#42a4ae"
     radius: 4
