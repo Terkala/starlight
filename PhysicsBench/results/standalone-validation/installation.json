@@ -1,0 +1,37 @@
+{
+  "repo": "G:\\starlight-git\\Tools\\PhysicsPr6783Audit\\live-round-checkout",
+  "restored": true,
+  "changes": [
+    {
+      "path": "G:\\starlight-git\\Tools\\PhysicsPr6783Audit\\live-round-checkout\\Content.IntegrationTests\\PortablePhysicsBench.Generated\\BundleMetrics.cs",
+      "backup": null,
+      "before_sha256": null,
+      "installed_sha256": "4d6c1be6316a89928f40a74dfc7675dc8181f8ee2d541772de14e7c1c2b42646"
+    },
+    {
+      "path": "G:\\starlight-git\\Tools\\PhysicsPr6783Audit\\live-round-checkout\\Content.IntegrationTests\\PortablePhysicsBench.Generated\\BundleSetup.cs",
+      "backup": null,
+      "before_sha256": null,
+      "installed_sha256": "371c3867c442e6d0e0745096ed1ef138a92f3cb37a6e96443460259b08e8d4c2"
+    },
+    {
+      "path": "G:\\starlight-git\\Tools\\PhysicsPr6783Audit\\live-round-checkout\\Content.IntegrationTests\\PortablePhysicsBench.Generated\\PhysicsStressProbes.cs",
+      "backup": null,
+      "before_sha256": null,
+      "installed_sha256": "6bdcb85f5ba4af28ed6c07a1d4cbec332b6d0b49b24abae4ac8ba0b7bc2da9ca"
+    },
+    {
+      "path": "G:\\starlight-git\\Tools\\PhysicsPr6783Audit\\live-round-checkout\\Content.IntegrationTests\\PortablePhysicsBench.Generated\\PortablePhysicsBenchTest.cs",
+      "backup": null,
+      "before_sha256": null,
+      "installed_sha256": "ca9fe87aaeaf96ccafec6f3bf471dead2bf8ddb8881292b86e4d6c0030bca3e3"
+    },
+    {
+      "path": "G:\\starlight-git\\Tools\\PhysicsPr6783Audit\\live-round-checkout\\Content.IntegrationTests\\_Starlight\\Patches\\EventTimingSummaryPatch.cs",
+      "backup": "G:\\starlight-git\\PhysicsBench\\results\\standalone-validation\\backup-4.bin",
+      "before_sha256": "0b6d9b00f2efcc7655c519cd5beddb0c29b1806248f711fb2635aa72e33a7b50",
+      "installed_sha256": "2ef98f272cfe640a0932e86f1c9747321f059dbd74b13cd5beaf32468dbe2ef9"
+    }
+  ],
+  "conflicts": []
+}

@@ -1,0 +1,30 @@
+{
+  "exit_code": 0,
+  "source_restored": true,
+  "cases": [
+    {
+      "scenario": "round_contacts",
+      "repetition": 1,
+      "status": "passed",
+      "report": "G:\\starlight-git\\PhysicsBench\\results\\standalone-validation\\20261025T223119Z-71a39dae-r1-round_contacts.json",
+      "log": "G:\\starlight-git\\PhysicsBench\\results\\standalone-validation\\r1-round_contacts.log",
+      "error": ""
+    },
+    {
+      "scenario": "round_movement",
+      "repetition": 1,
+      "status": "passed",
+      "report": "G:\\starlight-git\\PhysicsBench\\results\\standalone-validation\\20261025T223119Z-71a39dae-r1-round_movement.json",
+      "log": "G:\\starlight-git\\PhysicsBench\\results\\standalone-validation\\r1-round_movement.log",
+      "error": ""
+    },
+    {
+      "scenario": "round_presolve",
+      "repetition": 1,
+      "status": "passed",
+      "report": "G:\\starlight-git\\PhysicsBench\\results\\standalone-validation\\20261025T223119Z-71a39dae-r1-round_presolve.json",
+      "log": "G:\\starlight-git\\PhysicsBench\\results\\standalone-validation\\r1-round_presolve.log",
+      "error": ""
+    }
+  ]
+}

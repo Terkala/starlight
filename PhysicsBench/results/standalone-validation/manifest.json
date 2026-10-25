@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "run": "20261025T223119Z-71a39dae",
+  "repo": "G:\\starlight-git\\Tools\\PhysicsPr6783Audit\\live-round-checkout",
+  "settings": {
+    "repo": "G:\\starlight-git\\Tools\\PhysicsPr6783Audit\\live-round-checkout",
+    "bodies": 16,
+    "ticks": 40,
+    "warmup": 60,
+    "cases": [
+      "round_contacts",
+      "round_movement",
+      "round_presolve"
+    ],
+    "repeat": 1,
+    "probes": false,
+    "no_restore": true,
+    "output": "G:\\starlight-git\\PhysicsBench\\results\\standalone-validation",
+    "timeout_minutes": 45,
+    "recover": null
+  },
+  "content": {
+    "head": "bf595642664a227b2721d7191d3769951b4197f1",
+    "tracked_patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tracked_status": ""
+  },
+  "engine": {
+    "head": "556943b73f4213755923b9d2d98edc7e4d901cf6",
+    "tracked_patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tracked_status": ""
+  },
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "processor": "Intel64 Family 6 Model 165 Stepping 5, GenuineIntel",
+  "logical_cpus": 16,
+  "dotnet_sdk": "10.0.203",
+  "payload_files": {
+    "BundleMetrics.cs.txt": "4d6c1be6316a89928f40a74dfc7675dc8181f8ee2d541772de14e7c1c2b42646",
+    "BundleSetup.cs.txt": "371c3867c442e6d0e0745096ed1ef138a92f3cb37a6e96443460259b08e8d4c2",
+    "PhysicsStressProbes.cs.txt": "6bdcb85f5ba4af28ed6c07a1d4cbec332b6d0b49b24abae4ac8ba0b7bc2da9ca",
+    "PortablePhysicsBenchTest.cs.txt": "ca9fe87aaeaf96ccafec6f3bf471dead2bf8ddb8881292b86e4d6c0030bca3e3"
+  },
+  "payload_sha256": "c344a02babe5e185dc8b7310942d240e0e21bfee1126de283269e374d534f952"
+}
